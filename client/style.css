@@ -525,6 +525,15 @@ body {
   color: var(--text-light);
 }
 
+.podium-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
 /* ============ Confetti ============ */
 .confetti {
   position: fixed;

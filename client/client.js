@@ -44,6 +44,7 @@ const feedbackArea = document.getElementById('feedback-area');
 const feedbackIcon = document.getElementById('feedback-icon');
 const feedbackText = document.getElementById('feedback-text');
 const playAgainBtn = document.getElementById('play-again-btn');
+const podiumResetBtn = document.getElementById('podium-reset-btn');
 const gameInProgressModal = document.getElementById('game-in-progress-modal');
 const confettiEl = document.getElementById('confetti');
 
@@ -267,7 +268,7 @@ startBtn.addEventListener('click', () => {
   socket.emit('request_start_game');
 });
 
-resetBtn.addEventListener('click', () => {
+resetBtn?.addEventListener('click', () => {
   socket.emit('request_reset');
 });
 
@@ -283,4 +284,8 @@ btnFalse.addEventListener('click', () => {
 
 playAgainBtn.addEventListener('click', () => {
   socket.emit('request_play_again');
+});
+
+podiumResetBtn?.addEventListener('click', () => {
+  socket.emit('request_reset');
 });
