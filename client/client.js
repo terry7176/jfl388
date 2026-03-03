@@ -101,9 +101,10 @@ function renderTrack() {
       const label = document.createElement('div');
       label.className = 'skater-label';
       label.textContent = p.username;
-      const icon = document.createElement('div');
+      const icon = document.createElement('img');
       icon.className = 'skater-icon';
-      icon.textContent = '⛸';
+      icon.src = 'skater.png';
+      icon.alt = 'Skater';
       wrapper.appendChild(label);
       wrapper.appendChild(icon);
       trackPlayers.appendChild(wrapper);

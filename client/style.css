@@ -367,8 +367,9 @@ body {
 }
 
 .skater-icon {
-  font-size: 32px;
-  line-height: 1;
+  width: 48px;
+  height: 60px;
+  object-fit: contain;
 }
 
 /* ============ Question Panel ============ */
