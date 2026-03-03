@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speed Skate Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Olympic rings watermark (used on join and game screens) -->
+  <svg id="olympic-rings-bg" class="olympic-rings-watermark" viewBox="0 0 120 50" aria-hidden="true">
+    <circle cx="20" cy="25" r="8" fill="#0081C8" opacity="0.15"/>
+    <circle cx="40" cy="25" r="8" fill="#FCB131" opacity="0.15"/>
+    <circle cx="60" cy="25" r="8" fill="#000000" opacity="0.15"/>
+    <circle cx="80" cy="25" r="8" fill="#00A651" opacity="0.15"/>
+    <circle cx="100" cy="25" r="8" fill="#EE334E" opacity="0.15"/>
+  </svg>
+
+  <!-- Responsive warning for small screens -->
+  <div id="mobile-warning" class="mobile-warning hidden">
+    Please use a desktop browser for the best experience
+  </div>
+
+  <!-- Screen 1: Username Entry -->
+  <div id="screen-join" class="screen">
+    <div class="join-card">
+      <div class="olympic-rings-logo">
+        <svg viewBox="0 0 120 50" aria-hidden="true">
+          <circle cx="20" cy="25" r="8" fill="#0081C8"/>
+          <circle cx="40" cy="25" r="8" fill="#FCB131"/>
+          <circle cx="60" cy="25" r="8" fill="#000000"/>
+          <circle cx="80" cy="25" r="8" fill="#00A651"/>
+          <circle cx="100" cy="25" r="8" fill="#EE334E"/>
+        </svg>
+      </div>
+      <h1 class="title">Speed Skate Quiz</h1>
+      <input type="text" id="username-input" placeholder="Enter your username" maxlength="20" autocomplete="off">
+      <p id="connection-status" class="connection-status">Connecting to server...</p>
+      <button id="join-btn" class="btn btn-primary" disabled>Join Game</button>
+      <p id="join-error" class="error-message hidden"></p>
+    </div>
+  </div>
+
+  <!-- Screen 2: Main Game (players on track, START GAME when ready) -->
+  <div id="screen-game" class="screen hidden">
+    <div class="game-header">
+      <h1 class="game-title">Speed Skate Quiz</h1>
+      <div id="timer-area">
+        <span id="timer" class="timer">3:30</span>
+        <button id="start-btn" class="btn btn-primary btn-start">START GAME</button>
+      </div>
+    </div>
+    <div class="game-layout">
+      <div class="track-column">
+        <div class="track-container">
+          <div class="track">
+            <div class="start-line">START</div>
+            <div id="track-players" class="track-players"></div>
+            <div class="finish-line">FINISH</div>
+          </div>
+        </div>
+      </div>
+      <div class="question-column">
+        <div class="question-panel">
+          <h2 class="question-label">Question</h2>
+          <p id="question-text" class="question-text">Waiting for question...</p>
+          <div class="answer-buttons">
+            <button id="btn-true" class="btn btn-answer">TRUE</button>
+            <button id="btn-false" class="btn btn-answer">FALSE</button>
+          </div>
+          <div id="feedback-area" class="feedback-area hidden">
+            <div id="feedback-icon" class="feedback-icon"></div>
+            <p id="feedback-text" class="feedback-text"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Podium -->
+  <div id="screen-podium" class="screen hidden">
+    <div class="podium-container">
+      <h1 class="title">Race Complete!</h1>
+      <div class="podium">
+        <div class="podium-spot podium-2nd">
+          <div class="medal">🥈</div>
+          <div id="podium-2nd-name" class="podium-name">—</div>
+          <div id="podium-2nd-steps" class="podium-steps">0 steps</div>
+        </div>
+        <div class="podium-spot podium-1st">
+          <div class="medal">🥇</div>
+          <div id="podium-1st-name" class="podium-name">—</div>
+          <div id="podium-1st-steps" class="podium-steps">0 steps</div>
+        </div>
+        <div class="podium-spot podium-3rd">
+          <div class="medal">🥉</div>
+          <div id="podium-3rd-name" class="podium-name">—</div>
+          <div id="podium-3rd-steps" class="podium-steps">0 steps</div>
+        </div>
+      </div>
+      <button id="play-again-btn" class="btn btn-primary btn-large">Play Again</button>
+      <div id="confetti" class="confetti"></div>
+    </div>
+  </div>
+
+  <!-- Game already started message (modal) -->
+  <div id="game-in-progress-modal" class="modal hidden">
+    <div class="modal-content">
+      <p>A game is currently in progress. Please wait for it to end before joining.</p>
+      <button id="modal-ok-btn" class="btn btn-primary" style="margin-top: 16px;">OK</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
