@@ -203,6 +203,25 @@ io.on('connection', (socket) => {
     io.emit('lobby_update', getLobbyArray());
   });
 
+  socket.on('request_reset', () => {
+    if (gameState === 'playing') {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+    if (gameState !== 'lobby') {
+      gameState = 'lobby';
+      timeRemaining = 210;
+      for (const id of Object.keys(players)) {
+        players[id].position = 0;
+        players[id].questionIndex = 0;
+      }
+      io.emit('game_reset');
+      io.emit('lobby_update', getLobbyArray());
+    }
+  });
+
   socket.on('disconnect', () => {
     delete players[socket.id];
     if (gameState === 'lobby') {

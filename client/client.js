@@ -34,6 +34,7 @@ const usernameInput = document.getElementById('username-input');
 const joinBtn = document.getElementById('join-btn');
 const joinError = document.getElementById('join-error');
 const startBtn = document.getElementById('start-btn');
+const resetBtn = document.getElementById('reset-btn');
 const timerEl = document.getElementById('timer');
 const trackPlayers = document.getElementById('track-players');
 const questionText = document.getElementById('question-text');
@@ -264,6 +265,10 @@ usernameInput.addEventListener('keypress', (e) => {
 
 startBtn.addEventListener('click', () => {
   socket.emit('request_start_game');
+});
+
+resetBtn.addEventListener('click', () => {
+  socket.emit('request_reset');
 });
 
 btnTrue.addEventListener('click', () => {
