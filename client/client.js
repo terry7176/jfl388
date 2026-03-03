@@ -2,7 +2,7 @@
  * Speed Skate Quiz - Client
  * Replace SERVER_URL with your Render.com URL when deploying to Netlify
  */
-const SERVER_URL = 'http://localhost:3001'; // e.g. 'https://speedskate-server.onrender.com'
+const SERVER_URL = 'https://jfl388.onrender.com';
 const socket = io(SERVER_URL);
 
 // Connection status
