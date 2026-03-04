@@ -269,8 +269,17 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.05); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
 }
 
 .game-layout {
@@ -297,18 +306,16 @@ body {
   padding: 24px;
   border: 2px solid rgba(0, 212, 255, 0.3);
   background-image:
-    repeating-linear-gradient(
-      0deg,
+    repeating-linear-gradient(0deg,
       transparent,
       transparent 4px,
       var(--track-ice) 4px,
-      var(--track-ice) 6px
-    );
+      var(--track-ice) 6px);
 }
 
 .track {
   position: relative;
-  height: 120px;
+  height: 550px;
   background: linear-gradient(90deg, rgba(0, 212, 255, 0.15) 0%, rgba(127, 255, 212, 0.08) 100%);
   border-radius: 8px;
   overflow: visible;
@@ -336,13 +343,11 @@ body {
   top: 0;
   bottom: 0;
   width: 12px;
-  background: repeating-linear-gradient(
-    90deg,
-    white 0px,
-    white 4px,
-    #333 4px,
-    #333 8px
-  );
+  background: repeating-linear-gradient(90deg,
+      white 0px,
+      white 4px,
+      #333 4px,
+      #333 8px);
   display: flex;
   align-items: center;
   font-size: 0.7rem;
@@ -570,6 +575,7 @@ body {
     transform: translateY(-100px) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(100vh) rotate(720deg);
     opacity: 0;
