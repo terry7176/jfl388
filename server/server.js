@@ -21,28 +21,29 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3001;
 
-// ============ QUESTION POOL (20 Korea True/False) ============
+// ============ QUESTION POOL (21 CLI multiple-choice questions) ============
 const QUESTION_POOL = [
-  { id: 1, question: 'South Korea is the most densely populated country in the world.', answer: false, explanation: 'It is one of the densest but not the most.' },
-  { id: 2, question: 'Hangul, the Korean alphabet, was invented in the 15th century.', answer: true, explanation: '' },
-  { id: 3, question: 'Seoul is the capital city of South Korea.', answer: true, explanation: '' },
-  { id: 4, question: 'Korea was divided into North and South in 1945.', answer: true, explanation: '' },
-  { id: 5, question: 'Kimchi is a traditional Korean dish made of fermented vegetables.', answer: true, explanation: '' },
-  { id: 6, question: 'The Korean War officially ended with a peace treaty in 1953.', answer: false, explanation: 'It ended with an armistice, not a peace treaty.' },
-  { id: 7, question: 'South Korea hosted the Summer Olympics in 1988.', answer: true, explanation: '' },
-  { id: 8, question: 'The South Korean currency is called the Won.', answer: true, explanation: '' },
-  { id: 9, question: 'South Korea is larger in land area than North Korea.', answer: false, explanation: 'North Korea is slightly larger.' },
-  { id: 10, question: 'Taekwondo is a martial art that originated in Korea.', answer: true, explanation: '' },
-  { id: 11, question: 'South Korea has the fastest average internet speed in the world.', answer: true, explanation: '' },
-  { id: 12, question: 'The Han River runs through the city of Busan.', answer: false, explanation: 'The Han River runs through Seoul.' },
-  { id: 13, question: 'South Korea is a peninsula bordered by China to the west.', answer: false, explanation: 'It borders the Yellow Sea to the west; China is across that sea.' },
-  { id: 14, question: 'BTS is a South Korean pop group.', answer: true, explanation: '' },
-  { id: 15, question: 'South Korea became a democracy in the 1940s.', answer: false, explanation: 'South Korea transitioned to full democracy in the late 1980s.' },
-  { id: 16, question: 'Jeju Island is the largest island in South Korea.', answer: true, explanation: '' },
-  { id: 17, question: 'The Korean writing system, Hangul, has 24 basic letters.', answer: true, explanation: '' },
-  { id: 18, question: 'The 2018 Winter Olympics were held in PyeongChang, South Korea.', answer: true, explanation: '' },
-  { id: 19, question: 'South Korea and North Korea still share a joint economic zone called Kaesong.', answer: false, explanation: 'The Kaesong Industrial Complex has been suspended since 2016.' },
-  { id: 20, question: 'Bibimbap is a Korean dish that translates to "mixed rice."', answer: true, explanation: '' }
+  { id: 1, question: 'Abby speaks French as L1. She is planning to learn an L2. Out of Italian, Japanese, and Turkish, which language does CLI predict to be "easiest" to learn as an L2?', options: ['Italian', 'Japanese', 'Turkish'], answer: 'italian' },
+  { id: 2, question: 'True or false: Transfer is one type of cross-linguistic influence.', options: ['True', 'False'], answer: 'true' },
+  { id: 3, question: 'True or false: In general, CLI and language transfer is bidirectional, while interlanguage is unidirectional.', options: ['True', 'False'], answer: 'false' },
+  { id: 4, question: 'When Korean word order helps a learner understand Japanese sentence structure, this indicates:', options: ['Positive transfer', 'Negative transfer', 'Fossilization'], answer: 'positive transfer' },
+  { id: 5, question: "Paul's L1 is German. While learning an L2 at school, he unconsciously creates a kind of language that no one but him understands because he produces utterances that are ungrammatical in both languages. What is this \"new\" language called?", options: ['Pidgin', 'Lingua Franca', 'Interlanguage'], answer: 'interlanguage' },
+  { id: 6, question: 'True or false: Two similar languages may only lead to positive CLI and transfer.', options: ['True', 'False'], answer: 'false' },
+  { id: 7, question: 'True or false: CLI refers to how your knowledge of one language can affect another language you know.', options: ['True', 'False'], answer: 'true' },
+  { id: 8, question: 'Rudy is L1 in English and he is currently learning Indonesian. When he encountered the Indonesian word "pensiun" he immediately recognized it as related to the English word "pension" and deduced that both words have a similar meaning, which turned out to be true. Is this positive or negative CLI at work?', options: ['Positive', 'Negative'], answer: 'positive' },
+  { id: 9, question: 'Even though "librería" in Spanish sounds very similar to "library" in English, the two words have very different meanings. This is an example of false cognates and can be categorized into ____ CLI.', options: ['Positive', 'Negative'], answer: 'negative' },
+  { id: 10, question: 'Which of the following is NOT a subtype of CLI mentioned in the presentation?', options: ['Syntactic', 'Neutral', 'Lexical'], answer: 'neutral' },
+  { id: 11, question: 'Lexical CLI helps learning new lexical items as ___ as possible.', options: ['Slow', 'Empty', 'Fast'], answer: 'fast' },
+  { id: 12, question: 'Mandarin Chinese L1 speakers learning English as their L2 frequently substitute /ð/ (th) with similarly-sounding /z/ when speaking English since the former phoneme is not present in Mandarin Chinese. What subtype of CLI occurred in this scenario?', options: ['Phonological', 'Syntactic', 'Lexical'], answer: 'phonological' },
+  { id: 13, question: "True or false: A person's grammatical usages in L2 cannot be influenced by the grammatical system of their L1.", options: ['True', 'False'], answer: 'false' },
+  { id: 14, question: 'True or false: Fossilization is a potential effect of negative CLI.', options: ['True', 'False'], answer: 'true' },
+  { id: 15, question: 'A French speaker says "I have hunger" instead of "I am hungry" in English. This is an example of:', options: ['Positive CLI', 'Negative CLI'], answer: 'negative cli' },
+  { id: 16, question: 'Cross-linguistic influence only occurs when learning a second language for the first time.', options: ['True', 'False'], answer: 'false' },
+  { id: 17, question: 'A Spanish L1 speaker learning English pronounces the word "very" as "bery" because /v/ doesn\'t exist in Spanish. This is an example of ___ CLI.', options: ['Syntactic', 'Lexical', 'Phonological'], answer: 'phonological' },
+  { id: 18, question: 'A Persian speaker learning English says "the car of my friend" instead of "my friend\'s car." This is an example of:', options: ['Lexical CLI', 'Syntactic CLI', 'Phonological CLI'], answer: 'syntactic cli' },
+  { id: 19, question: 'Negative CLI can lead to a learner developing a permanent error pattern known as fossilization.', options: ['True', 'False'], answer: 'true' },
+  { id: 20, question: 'A Chinese L1 speaker learning English uses Subject-Verb-Object word order correctly. This is an example of:', options: ['Negative transfer', 'Positive transfer', 'Interlanguage'], answer: 'positive transfer' },
+  { id: 21, question: "Maria's L1 is English. She is learning Mandarin and produces sentences that are grammatically incorrect in both English and Mandarin. Her developing language system is called:", options: ['Pidgin', 'Interlanguage', 'Lingua Franca'], answer: 'interlanguage' }
 ];
 
 // ============ GAME STATE ============
@@ -146,7 +147,7 @@ io.on('connection', (socket) => {
     }
     io.emit('game_started', {
       firstQuestion: shuffledQuestions.length > 0
-        ? { id: shuffledQuestions[0].id, question: shuffledQuestions[0].question }
+        ? { id: shuffledQuestions[0].id, question: shuffledQuestions[0].question, options: shuffledQuestions[0].options }
         : null
     });
     io.emit('positions_update', getPositionsArray());
@@ -167,7 +168,7 @@ io.on('connection', (socket) => {
     const idx = player.questionIndex;
     const q = shuffledQuestions[idx];
     if (!q) return;
-    const userAnswer = data?.answer;
+    const userAnswer = (data?.answer || '').trim().toLowerCase();
     const correct = userAnswer === q.answer;
     if (correct) {
       player.position = Math.min(30, player.position + 1);
@@ -175,20 +176,23 @@ io.on('connection', (socket) => {
         correct: true,
         newPosition: player.position
       });
+      if (player.position >= 30) {
+        endGame();
+        return;
+      }
     } else {
       player.position = Math.max(0, player.position - 1);
       socket.emit('answer_result', {
         correct: false,
-        correctAnswer: q.answer,
-        explanation: q.explanation,
+        correctAnswer: q.options[q.options.map(o => o.toLowerCase()).indexOf(q.answer)],
         newPosition: player.position
       });
     }
-    player.questionIndex = (player.questionIndex + 1) % 20;
+    player.questionIndex = (player.questionIndex + 1) % shuffledQuestions.length;
     io.emit('positions_update', getPositionsArray());
     const nextIdx = player.questionIndex;
     const nextQ = shuffledQuestions[nextIdx];
-    socket.emit('next_question', nextQ ? { id: nextQ.id, question: nextQ.question } : null);
+    socket.emit('next_question', nextQ ? { id: nextQ.id, question: nextQ.question, options: nextQ.options } : null);
   });
 
   socket.on('request_play_again', () => {

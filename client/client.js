@@ -38,8 +38,7 @@ const resetBtn = document.getElementById('reset-btn');
 const timerEl = document.getElementById('timer');
 const trackPlayers = document.getElementById('track-players');
 const questionText = document.getElementById('question-text');
-const btnTrue = document.getElementById('btn-true');
-const btnFalse = document.getElementById('btn-false');
+const answerButtons = document.getElementById('answer-buttons');
 const feedbackArea = document.getElementById('feedback-area');
 const feedbackIcon = document.getElementById('feedback-icon');
 const feedbackText = document.getElementById('feedback-text');
@@ -72,60 +71,73 @@ function formatTime(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
+function renderAnswerButtons(options) {
+  answerButtons.innerHTML = '';
+  (options || []).forEach(option => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-answer';
+    btn.textContent = option;
+    btn.addEventListener('click', () => {
+      if (!gameActive || btn.disabled) return;
+      socket.emit('submit_answer', { answer: option.toLowerCase() });
+      // Disable all buttons after answering
+      answerButtons.querySelectorAll('button').forEach(b => b.disabled = true);
+    });
+    answerButtons.appendChild(btn);
+  });
+}
+
 function showQuestion(q) {
   if (!q) {
     questionText.textContent = 'No more questions.';
+    answerButtons.innerHTML = '';
     return;
   }
   currentQuestion = q;
   questionText.textContent = q.question;
   feedbackArea.classList.add('hidden');
-  btnTrue.disabled = false;
-  btnFalse.disabled = false;
+  renderAnswerButtons(q.options);
 }
 
 function renderTrack() {
   trackPlayers.innerHTML = '';
-  // Group players by position for stacking
-  const byPosition = {};
-  players.forEach(p => {
-    if (!byPosition[p.position]) byPosition[p.position] = [];
-    byPosition[p.position].push(p);
-  });
-  Object.entries(byPosition).forEach(([pos, pls]) => {
-    const positionNum = parseInt(pos, 10);
-    const leftPct = (positionNum / 30) * 100;
-    pls.forEach((p, idx) => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'skater-wrapper' + (p.socketId === mySocketId ? ' is-me' : '');
-      wrapper.style.left = `calc(${leftPct}% - 20px)`;
-      wrapper.style.bottom = `${20 + idx * 12}px`;
-      const label = document.createElement('div');
-      label.className = 'skater-label';
-      label.textContent = p.username;
-      const icon = document.createElement('img');
-      icon.className = 'skater-icon';
-      icon.src = 'skater.png';
-      icon.alt = 'Skater';
-      wrapper.appendChild(label);
-      wrapper.appendChild(icon);
-      trackPlayers.appendChild(wrapper);
-    });
+  const totalPlayers = players.length;
+  if (totalPlayers === 0) return;
+  // Distribute players evenly across the track height
+  players.forEach((p, idx) => {
+    const leftPct = (p.position / 30) * 100;
+    // Spread players vertically across the track with padding
+    const bottomPct = totalPlayers === 1
+      ? 50
+      : 10 + (idx / (totalPlayers - 1)) * 80; // 10% to 90% of track height
+    const wrapper = document.createElement('div');
+    wrapper.className = 'skater-wrapper' + (p.socketId === mySocketId ? ' is-me' : '');
+    wrapper.style.left = `calc(${leftPct}% - 20px)`;
+    wrapper.style.bottom = `${bottomPct}%`;
+    const label = document.createElement('div');
+    label.className = 'skater-label';
+    label.textContent = p.username;
+    const icon = document.createElement('img');
+    icon.className = 'skater-icon';
+    icon.src = 'skater.png';
+    icon.alt = 'Skater';
+    wrapper.appendChild(label);
+    wrapper.appendChild(icon);
+    trackPlayers.appendChild(wrapper);
   });
 }
 
-function showFeedback(correct, correctAnswer, explanation) {
+function showFeedback(correct, correctAnswer) {
   feedbackArea.classList.remove('hidden');
   feedbackArea.classList.remove('correct', 'incorrect');
   feedbackArea.classList.add(correct ? 'correct' : 'incorrect');
   feedbackIcon.textContent = correct ? '✓' : '✗';
   if (correct) {
-    feedbackText.textContent = 'Correct! Moving forward!';
+    feedbackText.textContent = 'Correct! Moving forward! 🚀';
   } else {
-    feedbackText.textContent = `Wrong! The correct answer is ${correctAnswer ? 'True' : 'False'}. ${explanation || ''}`.trim();
+    feedbackText.textContent = `Wrong! The correct answer is: ${correctAnswer}.`;
   }
-  btnTrue.disabled = true;
-  btnFalse.disabled = true;
+  answerButtons.querySelectorAll('button').forEach(b => b.disabled = true);
 }
 
 function updatePreGameUI() {
@@ -133,8 +145,7 @@ function updatePreGameUI() {
   timerEl.classList.add('hidden');
   questionText.textContent = 'Ready! Click START GAME when everyone has joined.';
   feedbackArea.classList.add('hidden');
-  btnTrue.disabled = true;
-  btnFalse.disabled = true;
+  answerButtons.innerHTML = '';
 }
 
 function createConfetti() {
@@ -191,7 +202,7 @@ socket.on('timer_update', (data) => {
 });
 
 socket.on('answer_result', (data) => {
-  showFeedback(data.correct, data.correctAnswer, data.explanation || '');
+  showFeedback(data.correct, data.correctAnswer);
   // Update our position in local state for immediate render
   const me = players.find(p => p.socketId === mySocketId);
   if (me) me.position = data.newPosition;
@@ -270,16 +281,6 @@ startBtn.addEventListener('click', () => {
 
 resetBtn?.addEventListener('click', () => {
   socket.emit('request_reset');
-});
-
-btnTrue.addEventListener('click', () => {
-  if (!gameActive || btnTrue.disabled) return;
-  socket.emit('submit_answer', { answer: true });
-});
-
-btnFalse.addEventListener('click', () => {
-  if (!gameActive || btnFalse.disabled) return;
-  socket.emit('submit_answer', { answer: false });
 });
 
 playAgainBtn.addEventListener('click', () => {
