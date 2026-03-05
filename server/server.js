@@ -50,7 +50,7 @@ const QUESTION_POOL = [
 let players = {};           // { socketId: { username, position, questionIndex } }
 let gameState = 'lobby';    // 'lobby' | 'playing' | 'ended'
 let timerInterval = null;
-let timeRemaining = 210;    // 3:30 = 210 seconds
+let timeRemaining = 180;    // 3:30 = 210 seconds
 let shuffledQuestions = []; // shuffled copy of QUESTION_POOL
 
 // Fisher-Yates shuffle
@@ -139,7 +139,7 @@ io.on('connection', (socket) => {
     if (gameState !== 'lobby') return;
     gameState = 'playing';
     shuffledQuestions = shuffleArray(QUESTION_POOL);
-    timeRemaining = 210;
+    timeRemaining = 180;
     // Reset all players
     for (const id of Object.keys(players)) {
       players[id].position = 0;
@@ -198,7 +198,7 @@ io.on('connection', (socket) => {
   socket.on('request_play_again', () => {
     if (gameState !== 'ended') return;
     gameState = 'lobby';
-    timeRemaining = 210;
+    timeRemaining = 180;
     for (const id of Object.keys(players)) {
       players[id].position = 0;
       players[id].questionIndex = 0;
@@ -215,7 +215,7 @@ io.on('connection', (socket) => {
       }
     }
     gameState = 'lobby';
-    timeRemaining = 210;
+    timeRemaining = 180;
     for (const id of Object.keys(players)) {
       players[id].position = 0;
       players[id].questionIndex = 0;
@@ -236,7 +236,7 @@ io.on('connection', (socket) => {
           timerInterval = null;
         }
         gameState = 'lobby';
-        timeRemaining = 210;
+        timeRemaining = 180;
       }
     } else if (gameState === 'ended') {
       io.emit('lobby_update', getLobbyArray());
